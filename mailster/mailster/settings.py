@@ -33,7 +33,7 @@ ALLOWED_HOSTS = []
 
 # Define url of broker for celery.
 
-CELERY_BROKER_URL = 'amqp://localhost'
+CELERY_BROKER_URL = config('CELERY_BROKER_URL')
 
 # Application definition
 
