@@ -3,31 +3,30 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 class Campaign(models.Model):
-    campaign_name = models.CharField(max_length=255, default="")
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    campaign_name = models.CharField(max_length=255),
+    user_id = models.ForeignKey(User, on_delete=models.CASCADE)
 
-class Contact(models.Model):
-    email = models.EmailField()
-    created_at = models.DateField(auto_now_add=True)
-    is_valid = models.BooleanField()
+class Contacts(models.Model):
+    email = models.EmailField(),
+    created_at = models.DateField(auto_now_add=True),
+    is_valid = models.BooleanField(),
     campaign_name = models.ForeignKey(Campaign, on_delete=models.CASCADE)
 
 class LastSending(models.Model):
-    contacts = models.ForeignKey(Contact, on_delete=models.CASCADE)
-    email = models.EmailField(default="")
+    contacts = models.ForeignKey(Contacts, on_delete=models.CASCADE)
+    email = models.EmailField(),
     last_email = models.DateField()
 
 
 class Statistic(models.Model):
-    campaigns = models.ForeignKey(Campaign, on_delete=models.CASCADE, default="")
-    campaign_name = models.CharField(max_length=255, default="")
-    is_opened = models.BooleanField(default=0)
-    emails_count = models.IntegerField(default=0)
+    campaign_name = models.CharField(max_length=255),
+    isOpened = models.BooleanField(),
+    emails_count = models.IntegerField(),
     date = models.DateField()
 
-class Template(models.Model):
-    campaigns = models.ForeignKey(Campaign, on_delete=models.CASCADE)
-    template_name = models.CharField(max_length=255)
+class Templates(models.Model):
+    campaigns = models.ForeignKey(Campaign, on_delete=models.CASCADE),
+    template_name = models.CharField(max_length=255),
     email_text = models.TextField(default="")
 
 
