@@ -19,9 +19,8 @@ class LastSending(models.Model):
 
 
 class Statistic(models.Model):
-    campaigns = models.ForeignKey(Campaign, on_delete=models.CASCADE, default="")
-    campaign_name = models.CharField(max_length=255, default="")
-    is_opened = models.BooleanField(default=0)
+    campaigns = models.ForeignKey(Campaign, on_delete=models.CASCADE, null=True)
+    is_opened = models.BooleanField(default=False)
     emails_count = models.IntegerField(default=0)
     date = models.DateField()
 
