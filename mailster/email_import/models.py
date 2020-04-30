@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+
+
 # Create your models here.
 class Campaign(models.Model):
     campaign_name = models.CharField(max_length=255, default="")
@@ -11,6 +13,8 @@ class Contact(models.Model):
     created_at = models.DateField(auto_now_add=True)
     is_valid = models.BooleanField()
     campaign_name = models.ForeignKey(Campaign, on_delete=models.CASCADE)
+
+
 
 class LastSending(models.Model):
     contacts = models.ForeignKey(Contact, on_delete=models.CASCADE)

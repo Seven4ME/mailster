@@ -11,7 +11,6 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
-
 #Library for encrypting of credentionals
 from decouple import config
 
@@ -31,6 +30,7 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 
+
 # Define url of broker for celery.
 
 CELERY_BROKER_URL = config('CELERY_BROKER_URL')
@@ -45,7 +45,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'email_import',
-    'import_export'
+    'import_export_celery',
+    'import_export',
+    
 ]
 
 MIDDLEWARE = [
@@ -131,3 +133,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
+
+#define app label && model name for import_export_celery
+IMPORT_EXPORT_CELERY_MODELS = {
+    'Contact': {'app_label': 'email_import', 'model_name': 'Contact'}
+}
