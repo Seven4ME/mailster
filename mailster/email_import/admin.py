@@ -1,10 +1,12 @@
+from import_export.admin import ImportExportModelAdmin
 from django.contrib import admin
-from import_export import resources
-from .models import Contact
+from .models import Contact, Campaign
 
 # Register your models here.
-class ContactResource(resources.ModelResource):
-    class Meta:
-        model = Contact
-        fields = ('email', 'created_at', 'is_valid', 'campaign_name')
+@admin.register(Contact)
+class ContactAdmin(ImportExportModelAdmin):
+    pass
 
+@admin.register(Campaign)
+class CampaignAdmin(ImportExportModelAdmin):
+    pass
