@@ -1,0 +1,147 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../images/favicon.ico">
+
+    <title>Lotus Admin - Dashboard</title>
+    
+	  
+	<!-- Style-->  
+	<link rel="stylesheet" href="{% static '/css/style.css' %}">
+    <link rel="stylesheet" href="{% static '/css/skin_color.css'%}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+     
+  </head>
+
+<body class="hold-transition dark-skin sidebar-mini theme-primary fixed">
+	
+<div class="wrapper">
+
+  <header class="main-header">
+	<div class="d-flex align-items-center logo-box pl-20">		
+		<a href="index.html#" class="waves-effect waves-light nav-link rounded d-none d-md-inline-block" data-toggle="push-menu" role="button">
+			<i class="nav-link-icon mdi mdi-menu text-dark"></i>
+		</a>
+		<!-- Logo -->
+		<a href="index.html" class="logo">
+		  <!-- logo-->
+		  <div class="logo-lg">
+			  <span class="dark-logo">
+        Mailer
+        </span>
+		  </div>
+		</a>
+	</div>  
+    <!-- Header Navbar -->
+    <nav class="navbar navbar-static-top pl-10">
+      <!-- Sidebar toggle button-->
+	  <div class="app-menu">
+		<ul class="header-megamenu nav">
+			<li class="btn-group nav-item d-md-none">
+				<a href="index.html#" class="waves-effect waves-light nav-link rounded" data-toggle="push-menu" role="button">
+					<i class="nav-link-icon mdi mdi-menu text-dark"></i>
+			    </a>
+			</li>
+			<li class="btn-group nav-item">
+				<a href="index.html#" data-provide="fullscreen" class="waves-effect waves-light nav-link rounded" title="Full Screen">
+					<i class="nav-link-icon mdi mdi-crop-free text-dark"></i>
+			    </a>
+			</li>
+					
+			
+		</ul> 
+	  </div>
+		
+      
+    </nav>
+  </header>
+  
+  <!-- Left side column. contains the logo and sidebar -->
+  <aside class="main-sidebar">
+    <!-- sidebar-->
+    <section class="sidebar">	
+      <!-- sidebar menu-->
+      <ul class="sidebar-menu" data-widget="tree">
+		
+		<li class="treeview menu-open">
+          <a href="#">
+            <i class="mdi mdi-minus-network"></i>
+            <span>Dashboard</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-right pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu" style="display: block;">
+            <li><a href={% url 'campaigns_list' %}><i class="ti-more"></i>Campaigns list</a></li>
+            <li><a href={% url 'contacts_list' %}><i class="ti-more"></i>Contacts list</a></li>
+          </ul>
+        </li>   
+      </ul>
+    </section>
+  </aside>
+
+  {% block content %}
+ 
+
+  {% endblock %}
+  <!-- /.content-wrapper -->
+  <footer class="main-footer">
+    <div class="pull-right d-none d-sm-inline-block">
+        <ul class="nav nav-primary nav-dotted nav-dot-separated justify-content-center justify-content-md-end">
+		  <li class="nav-item">
+			<a class="nav-link" href="javascript:void(0)">FAQ</a>
+		  </li>
+		  <li class="nav-item">
+			<a class="nav-link" href="index.html#">Purchase Now</a>
+		  </li>
+		</ul>
+    </div>
+	  &copy; 2020 <a href="https://www.multipurposethemes.com/">Emailer</a>. All Rights Reserved.
+  </footer>
+
+  <!-- Control Sidebar -->
+  <aside class="control-sidebar">
+	  
+	<div class="rpanel-title"><span class="pull-right btn btn-circle btn-danger"><i class="ion ion-close text-white" data-toggle="control-sidebar"></i></span> </div>  <!-- Create the tabs -->
+    <ul class="nav nav-tabs control-sidebar-tabs">
+      <li class="nav-item"><a href="index.html#control-sidebar-home-tab" data-toggle="tab"><i class="mdi mdi-message-text"></i></a></li>
+      <li class="nav-item"><a href="index.html#control-sidebar-settings-tab" data-toggle="tab"><i class="mdi mdi-playlist-check"></i></a></li>
+    </ul>
+    <!-- Tab panes -->
+    
+  </aside>
+  <!-- /.control-sidebar -->
+  
+  <!-- Add the sidebar's background. This div must be placed immediately after the control sidebar -->
+  <div class="control-sidebar-bg"></div>
+  
+</div>
+<!-- ./wrapper -->	 
+	
+	<!-- Vendor JS -->
+	<script src="static/js/vendors.min.js"></script>
+	
+    
+	<script src="static/vendor_components/apexcharts-bundle/irregular-data-series.js"></script>
+	<script src="static/vendor_components/apexcharts-bundle/dist/apexcharts.js"></script>	
+	<script src="static/vendor_components/progressbar.js-master/dist/progressbar.js"></script>
+	<script src="static/vendor_components/chart.js-master/Chart.min.js"></script>
+	<script src="static/vendor_components/zingchart_branded_version/zingchart.min.js"></script>	
+	
+	<!-- Lotus Admin App -->
+	<script src="static/js/template.js"></script>
+	<script src="static/js/pages/dashboard.js"></script>
+	<script src="static/js/demo.js"></script>
+	
+	
+</body>
+</html>
+
+
+    

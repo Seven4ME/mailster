@@ -1,0 +1,12 @@
+{%extends 'base_dashboard.html'%}
+
+{%block content%}
+<div class="content-wrapper">
+    <div class="container-full">
+    <form method="post">{% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Update">
+</form>
+    </div>
+    </div>
+{%endblock%}

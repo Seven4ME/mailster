@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-
+from django.urls import reverse
 
 
 # Create your models here.
@@ -14,6 +14,8 @@ class Contact(models.Model):
     is_valid = models.BooleanField()
     campaign_name = models.ForeignKey(Campaign, on_delete=models.CASCADE)
 
+    def get_absolute_url(self):
+        return reverse('contact-detail', kwargs={'pk': self.pk})
 
 
 class LastSending(models.Model):

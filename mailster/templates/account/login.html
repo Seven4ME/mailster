@@ -1,0 +1,78 @@
+{% extends "account/base.html" %}
+{% load static %}
+{% load i18n %}
+{% load account socialaccount %}
+
+{% block head_title %}{% trans "Sign In" %}
+
+{% endblock %}
+
+{% block extra_head %}
+
+<link href="{% static '/css/main.css'%}" rel="stylesheet" type="text/css">
+<link href="{% static '/css/util.css'%}" rel="stylesheet" type="text/css">
+<link rel="stylesheet" type="text/css" href="{% static '/fonts/font-awesome-4.7.0/css/font-awesome.min.css'%}">
+<link rel="stylesheet" type="text/css" href="{% static '/fonts/iconic/css/material-design-iconic-font.min.css'%}">
+</style>
+{%endblock%}
+
+{% block content %}
+
+<div class="limiter">
+  <div class="container-login100">
+    <div class="wrap-login100 p-l-55 p-r-55 p-t-65 p-b-54">
+      <form class="login100-form validate-form" method="POST" action="{% url 'account_login' %}">
+        {% csrf_token %}
+        <span class="login100-form-title p-b-49">
+          Login
+        </span>
+
+        <div class="wrap-input100 validate-input m-b-23" data-validate="Username is reauired">
+          <span class="label-input100">Username</span>
+          <input class="input100" type="text" name="login" placeholder="Type your username" autofocus="autofocus"
+            maxlength="150" required="" id="id_login">
+          <span class="focus-input100" data-symbol="&#xf206;"></span>
+        </div>
+
+        <div class="wrap-input100 validate-input" data-validate="Password is required">
+          <span class="label-input100">Password</span>
+          <input class="input100" type="password" name="password" placeholder="Type your password" required=""
+            id="id_password">
+          <span class="focus-input100" data-symbol="&#xf190;"></span>
+        </div>
+
+
+
+        <div class="container-login100-form-btn p-t-8">
+          <div class="wrap-login100-form-btn">
+            <div class="login100-form-bgbtn"></div>
+            <button class="login100-form-btn" type="submit">{% trans "Sign In" %}</button>
+
+          </div>
+        </div>
+
+        <div class="txt1 text-center p-t-54 p-b-20">
+          <span>
+            Or Sign Up Using
+          </span>
+        </div>
+
+        <div class="flex-c-m">
+          {% get_providers as socialaccount_providers %}
+
+          {% if socialaccount_providers %}
+          <p>{% blocktrans with site.name as site_name %}
+            {% endblocktrans %}</p>
+          <div class="socialaccount_ballot">
+            {% include "socialaccount/snippets/provider_list.html" with process="login" %}
+          </div>
+          {% endif %}
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+<div id="dropDownSelect1"></div>
+{% endblock %}

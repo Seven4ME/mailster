@@ -1,0 +1,63 @@
+{%extends 'base_dashboard.html'%}
+
+{%block content%}
+<div class="content-wrapper">
+    <div class="container-full">
+        <div class="col-lg-6 col-12">
+            <div class="box">
+                <div class="box-header with-border">
+                    <h4 class="box-title">Add Contact</h4>
+                </div>
+                <!-- /.box-header -->
+
+                <form class="form" method="POST">
+                    {% csrf_token %}
+                    <div class="box-body">
+                        <div class="form-group">
+                            <label>Email</label>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="ti-user"></i></span>
+                                </div>
+                                <input type="email" class="form-control" name="email" maxlength="254" required=""
+                                    id="id_email">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Is valid</label>
+                            <div class="checkbox checkbox-success">
+                                <input type="checkbox" name="is_valid" id="checkbox1">
+                                <label for="checkbox1"> </label>
+                            </div>
+                            <div class="input-group mb-3">
+
+                            </div>
+                        </div>
+
+
+
+                        <div class="form-group">
+                            <label>Select</label>
+
+                            <select name="campaign_name" class="form-control" required="" id="id_campaign_name">
+                                {%for option in form.campaign_name%}
+                                <option>{{option}}</option>
+                                {%endfor%}
+
+                            </select>
+                        </div>
+                    </div>
+                    <!-- /.box-body -->
+                    <div class="box-footer">
+                        <button type="submit" class="btn btn-rounded btn-primary btn-outline">
+                            <i class="ti-save-alt"></i> Save
+                        </button>
+                    </div>
+                </form>
+            </div>
+            <!-- /.box -->
+        </div>
+    </div>
+</div>
+{%endblock%}

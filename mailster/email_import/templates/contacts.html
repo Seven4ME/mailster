@@ -1,0 +1,88 @@
+{% extends 'base_dashboard.html'%}
+
+{%block content%}
+<div class="content-wrapper">
+    <div class="container-full">
+    <div class="col-12 col-lg-12">
+            <div class="box">
+                <div class="box-header with-border">
+                    <h4 class="box-title">Contacts list</h4>
+
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0">
+                            <tbody>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">email</th>
+                                    <th scope="col">created_at</th>
+                                    <th scope="col">is_valid</th>
+                                    <th scope="col">campaign_name</th>
+                                    <th scope="col">Update</th>
+                                </tr>
+                            </tbody>
+                            <tbody>
+
+                                {% for contacts in object_list %}
+                                <tr>
+                                    <td>{{ contacts.id }}</td>
+                                    <td>{{ contacts.email }}</td>
+                                    <td>{{ contacts.created_at }}</td>
+                                    <td>{{ contacts.is_valid }}</td>
+                                    <td>{{ contacts.campaign_name }}</td>
+                                    <td><a type="button" href="./contacts/update/{{ contacts.id }}" class="waves-effect waves-light btn btn-success mb-5">+
+                        Update</a></td>
+                                    
+                                </tr>
+                                {% endfor %}
+
+
+                            </tbody>
+                        </table>
+                    </div>
+                    <a type="button" href={%url 'contacts_create'%} class="waves-effect waves-light btn btn-success mb-5">+
+                        Add new</a>
+                        
+                    <div class="pagination">
+                        {% if is_paginated %}
+                        <ul class="pagination">
+                            {% if page_obj.has_previous %}
+                            <li><a href="?page={{ page_obj.previous_page_number }}">&laquo;</a></li>
+                            
+                            {% else %}
+                            <li class="page-item disabled">
+                                <a>&laquo; </a>
+
+                            </li>
+                            {% endif %}
+                            {% for i in paginator.page_range %}
+                            {% if page_obj.number == i %}
+                            <li class="page-item active">
+
+                                <a class="page-link" href="?page={{ i }}">{{ i }}</a>
+                            </li>
+                            {% elif i > page_obj.number|add:'-3' and i < page_obj.number|add:'3'%}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ i }}">{{ i }}</a>
+                            </li>
+                            {% endif %}
+                            {% endfor %}
+                            {% if page_obj.has_next %}
+                            <li><a href="?page={{ page_obj.next_page_number }}">&raquo;</a></li>
+                            {% else %}
+                            <li class="disabled"><a>&raquo;</a></li>
+                            {% endif %}
+                        </ul>
+                        {% endif %}
+                    </div>
+                </div>
+                <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+        </div>
+    </div>
+    </div>
+{%endblock%}
