@@ -29,16 +29,18 @@ class CampaignCreate(CreateView):
     fields = ['campaign_name', 'user']
     success_url = '/email_import/dashboard/campaigns'
 
+    def get_form_kwargs(self):
+        """Перехватываем kwargs, который передаётся в форму и добавляем нужные нам данные"""
+        kwargs = super().get_form_kwargs()
+        # так как kwargs['data'] изначатьно иммутабельный QueryDict мы его делаем мутабельным через copy()
+        modified_data = kwargs['data'].copy()
+        # добавляем нужный нам ключ и значение в словарь,
+        # надо обратить внимание что это работает только для авторизованной сессии
+        modified_data['user'] = self.request.user.id
+        # заменяем kwargs['data'] на измененный словарь
+        kwargs['data'] = modified_data
+        return kwargs
 
-    def get_initial(self):
-        print(123)
-        return {
-            'user': self.request.user,
-        }
-
-
-
-    
 
 class ContactList(ListView):
     paginate_by = 5
