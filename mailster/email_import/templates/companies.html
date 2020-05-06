@@ -20,6 +20,7 @@
                                     <th scope="col">#</th>
                                     <th scope="col">campaign_name</th>
                                     <th scope="col">User</th>
+                                    <th scope="col">Update</th>
                                 </tr>
                             </tbody>
                             <tbody>
@@ -28,7 +29,13 @@
                                 <tr>
                                     <td>{{ campaign.id }}</td>
                                     <td>{{ campaign.campaign_name }}</td>
-                                    <td>{{campaign.user}}
+                                    <td>{{campaign.user}}</td>
+                                <td>
+                                    <a type="button" href="./campaigns/update/{{ campaign.id }}" class="waves-effect waves-light btn btn-success mb-5">+
+                        Update</a>
+
+                                </td>
+
                                 </tr>
                                 {% endfor %}
 

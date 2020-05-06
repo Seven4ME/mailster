@@ -10,7 +10,6 @@ from .models import Campaign, Contact
 from django.contrib.auth.decorators import login_required
 
 
-
 def celery_view(request):
     for counter in range(2):
         celery_task.delay(counter)
@@ -42,6 +41,10 @@ class CampaignCreate(CreateView):
             kwargs['data'] = modified_data
         return kwargs
 
+class CampaignUpdate(UpdateView):
+    model = Campaign
+    fields = ['campaign_name']
+    success_url = '/email_import/dashboard/campaigns'
 
 class ContactList(ListView):
     paginate_by = 5

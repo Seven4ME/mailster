@@ -1,0 +1,13 @@
+{% extends 'base_dashboard.html' %}
+
+{% block content %}
+<div class="content-wrapper">
+    <div class="container-full">
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Update</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
