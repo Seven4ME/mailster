@@ -33,12 +33,13 @@ class CampaignCreate(CreateView):
         """Перехватываем kwargs, который передаётся в форму и добавляем нужные нам данные"""
         kwargs = super().get_form_kwargs()
         # так как kwargs['data'] изначатьно иммутабельный QueryDict мы его делаем мутабельным через copy()
-        modified_data = kwargs['data'].copy()
-        # добавляем нужный нам ключ и значение в словарь,
-        # надо обратить внимание что это работает только для авторизованной сессии
-        modified_data['user'] = self.request.user.id
-        # заменяем kwargs['data'] на измененный словарь
-        kwargs['data'] = modified_data
+        if data := kwargs.get('data'):
+            modified_data = data.copy()
+            # добавляем нужный нам ключ и значение в словарь,
+            # надо обратить внимание что это работает только для авторизованной сессии
+            modified_data['user'] = self.request.user.id
+            # заменяем kwargs['data'] на измененный словарь
+            kwargs['data'] = modified_data
         return kwargs
 
 
