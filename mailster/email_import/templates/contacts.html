@@ -33,7 +33,7 @@
                                     <td>{{ contacts.created_at }}</td>
                                     <td>{{ contacts.is_valid }}</td>
                                     <td>{{ contacts.campaign_name }}</td>
-                                    <td><a type="button" href="./contacts/update/{{ contacts.id }}" class="waves-effect waves-light btn btn-success mb-5">+
+                                    <td><a type="button" href="{% url 'contacts_update' %}" class="waves-effect waves-light btn btn-success mb-5">+
                         Update</a></td>
                                     
                                 </tr>
@@ -43,7 +43,7 @@
                             </tbody>
                         </table>
                     </div>
-                    <a type="button" href={%url 'contacts_create'%} class="waves-effect waves-light btn btn-success mb-5">+
+                    <a type="button" href="{%url 'contacts_create' contacts.id%}" class="waves-effect waves-light btn btn-success mb-5">+
                         Add new</a>
                         
                     <div class="pagination">
