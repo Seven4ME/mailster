@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.urls import reverse
-
+from ckeditor.fields import RichTextField
 
 # Create your models here.
 class Campaign(models.Model):
@@ -33,7 +33,8 @@ class Statistic(models.Model):
 class Template(models.Model):
     campaigns = models.ForeignKey(Campaign, on_delete=models.CASCADE)
     template_name = models.CharField(max_length=255)
-    email_text = models.TextField(default="")
+    #email_text = models.TextField(default="")
+    email_text = RichTextField(blank=True, null=True)
 
 
 

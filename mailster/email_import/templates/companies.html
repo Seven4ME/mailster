@@ -3,6 +3,7 @@
 {%block content%}
 <div class="content-wrapper">
     <div class="container-full">
+
         <!-- Main content -->
         <div class="col-12 col-lg-6">
             <div class="box">
@@ -21,6 +22,8 @@
                                     <th scope="col">campaign_name</th>
                                     <th scope="col">User</th>
                                     <th scope="col" style="text-align: center;">Update</th>
+                                    <th scope="col" style="text-align: left;">Info</th>
+
                                 </tr>
                             </tbody>
                             <tbody>
@@ -34,6 +37,10 @@
                                     <a style="margin: 0!important" type="button" href="{% url 'campaigns_update' campaign.id %}" class="waves-effect waves-light btn btn-warning mb-5">+
                         Update</a>
 
+                                </td>
+                                <td >
+                                    <a style="margin: 0!important" type="button" href="{% url 'companies_info' campaign.id %}" class="waves-effect waves-light btn btn-warning mb-5"><i class="fa fa-info-circle" aria-hidden="true"></i>
+                        Info</a>
                                 </td>
 
                                 </tr>

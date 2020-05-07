@@ -1,0 +1,46 @@
+{% extends 'base_dashboard.html' %}
+
+{% block content %}
+    <div class="content-wrapper">
+    <div class="container-full">
+        <div class="col-lg-6">
+					<div class="box">
+						<div class="box-body">
+							<h4 class="box-title">Detail info about campaign # {{ object.id }}</h4>
+							<div class="table-responsive">
+								<table class="table">
+									<thead class="bg-primary">
+										<tr>
+											<th>#</th>
+											<th>Campaign name</th>
+											<th>User</th>
+											<th>Templates</th>
+                                            <th>Create template</th>
+										</tr>
+									</thead>
+									<tbody>
+                                    <tr>
+                                        <td>{{ object.id }} </td>
+                                        <td>{{ object.campaign_name }}</td>
+                                        <td>{{ object.user }}</td>
+                                    <td>
+                                        {% for templates in related_campaigns %}
+                                            <a href="{% url 'update_template'  object.id%}">{{ templates.template_name }} </a> <br>
+                                        {% endfor %}
+                                    </td>
+
+
+                                        <td><a style="margin: 0!important" type="button" href="{% url 'create_template' campaign.id %}" class="waves-effect waves-light btn btn-warning mb-5">+ Create</a></td>
+
+                                    </tr>
+
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+    </div>
+    </div>
+
+{% endblock %}

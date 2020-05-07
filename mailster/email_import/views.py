@@ -1,12 +1,12 @@
 from django.shortcuts import render
-from django.views.generic import ListView, CreateView, UpdateView
+from django.views.generic import ListView, CreateView, UpdateView, DetailView
 # Create your views here.
 
 from django.shortcuts import HttpResponse
 
 from .tasks import celery_task
 
-from .models import Campaign, Contact
+from .models import Campaign, Contact, Template
 from django.contrib.auth.decorators import login_required
 
 
@@ -44,6 +44,32 @@ class CampaignCreate(CreateView):
 class CampaignUpdate(UpdateView):
     model = Campaign
     fields = ['campaign_name']
+    success_url = '/email_import/dashboard/campaigns'
+
+class CampaignInfo(DetailView):
+    model = Campaign
+
+    def get_context_data(self, **kwargs):
+        context = super(CampaignInfo, self).get_context_data(**kwargs)
+        context['related_campaigns'] = Template.objects.filter(campaigns_id=self.kwargs['pk'])
+        return context
+
+class TemplateCreate(CreateView):
+    model = Template
+    fields = ['campaigns', 'template_name', 'email_text']
+    success_url = '/email_import/dashboard/campaigns'
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        if data := kwargs.get('data'):
+            modified_data = data.copy()
+            modified_data['campaigns'] = self.kwargs['pk']
+            kwargs['data'] = modified_data
+        return kwargs
+
+class TemplateUpdate(UpdateView):
+    model = Template
+    fields = ['template_name', 'email_text']
     success_url = '/email_import/dashboard/campaigns'
 
 class ContactList(ListView):

@@ -161,6 +161,9 @@ iframe {
 .limiter {
   width: 100%;
   margin: 0 auto;
+  background: #34e89e;  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #0f3443, #34e89e);  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #0f3443, #34e89e); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
 
 .container-login100 {
@@ -458,11 +461,13 @@ iframe {
   height: 50px;
   border-radius: 50%;
   margin: 5px;
+  text-decoration: none;
 }
 
 .login100-social-item:hover {
   color: #fff;
   background-color: #333333;
+
 }
 
 /*//////////////////////////////////////////////////////////////////
