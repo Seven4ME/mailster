@@ -14,6 +14,9 @@ class Contact(models.Model):
     is_valid = models.BooleanField()
     campaign_name = models.ForeignKey(Campaign, on_delete=models.CASCADE)
 
+    def __str__(self):
+        return self.email
+
     def get_absolute_url(self):
         return reverse('contact-detail', kwargs={'pk': self.pk})
 
@@ -33,9 +36,15 @@ class Statistic(models.Model):
 class Template(models.Model):
     campaigns = models.ForeignKey(Campaign, on_delete=models.CASCADE)
     template_name = models.CharField(max_length=255)
-    #email_text = models.TextField(default="")
     email_text = RichTextField(blank=True, null=True)
 
+    def __str__(self):
+        return self.template_name
+
+class Sending(models.Model):
+    campaign_name = models.ForeignKey(Campaign, on_delete=models.CASCADE)
+    template_name = models.ForeignKey(Template, on_delete=models.CASCADE)
+    email = models.ForeignKey(Contact, on_delete=models.CASCADE)
 
 
 

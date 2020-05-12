@@ -1,14 +1,13 @@
 from django.shortcuts import render
 from django.views.generic import ListView, CreateView, UpdateView, DetailView
+from django.http import HttpResponse, HttpResponseRedirect
 # Create your views here.
-
-from django.shortcuts import HttpResponse
 
 from .tasks import celery_task
 
-from .models import Campaign, Contact, Template
+from .models import Campaign, Contact, Template, Sending
 from django.contrib.auth.decorators import login_required
-
+from django.forms import inlineformset_factory
 
 def celery_view(request):
     for counter in range(2):
@@ -52,7 +51,19 @@ class CampaignInfo(DetailView):
     def get_context_data(self, **kwargs):
         context = super(CampaignInfo, self).get_context_data(**kwargs)
         context['related_campaigns'] = Template.objects.filter(campaigns_id=self.kwargs['pk'])
+        SendingFormSet = inlineformset_factory(Contact, Sending, fields=('email', 'template_name'),extra=2)
+        context['inline_form'] = SendingFormSet
+        context['is_existing'] = Sending.objects.filter(campaign_name_id=self.kwargs['pk']).exists()
         return context
+
+    def post(self, request, *args, **kwargs):
+        if request.method == 'POST':
+            post_data = self.request.POST
+            save_to_db = Sending(campaign_name_id=self.kwargs['pk'], email_id=post_data['email'], template_name_id=post_data['template_name'])
+            save_to_db.save()
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+
+
 
 class TemplateCreate(CreateView):
     model = Template

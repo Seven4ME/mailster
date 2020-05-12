@@ -4,6 +4,19 @@
     <div class="content-wrapper">
     <div class="container-full">
         <div class="col-lg-6">
+
+        {% if is_existing == False %}
+            <form method="POST">
+                {% csrf_token %}
+                {{ inline_form.form }}
+                <button type="submit">Save</button>
+            </form>
+            {% else %}
+            <button>SEND</button>
+        {% endif %}
+
+
+
 					<div class="box">
 						<div class="box-body">
 							<h4 class="box-title">Detail info about campaign # {{ object.id }}</h4>
