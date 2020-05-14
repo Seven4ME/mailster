@@ -17,11 +17,9 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
-from email_import.views import celery_view
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('celerytask/', celery_view),
     path('accounts/', include('allauth.urls')),
-    path('email_import/', include('email_import.urls'))
+    path('email_import/', include('email_import.urls')),
 ]

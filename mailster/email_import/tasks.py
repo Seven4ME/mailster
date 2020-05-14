@@ -1,7 +1,4 @@
 from celery import shared_task
 import time
+from .models import Contact
 
-@shared_task
-def celery_task(counter):
-    time.sleep(30)
-    return '{} Done!'.format(counter)

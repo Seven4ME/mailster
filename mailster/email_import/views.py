@@ -1,19 +1,23 @@
 from django.shortcuts import render
 from django.views.generic import ListView, CreateView, UpdateView, DetailView
-from django.views.generic.base import ContextMixin
+
 from django.http import HttpResponse, HttpResponseRedirect
 # Create your views here.
 
-from .tasks import celery_task
 
 from .models import Campaign, Contact, Template, Sending
 from django.contrib.auth.decorators import login_required
 from django.forms import inlineformset_factory
 
-def celery_view(request):
-    for counter in range(2):
-        celery_task.delay(counter)
-    return HttpResponse("FINISH PAGE LOAD")
+
+def sending_email_example(request, **kwargs):
+    campaign_id = Sending.objects.filter(campaign_name_id=kwargs['pk']).get()
+    letter_content = Template.objects.filter(id=campaign_id.template_name_id).get()
+    response = HttpResponse(content=letter_content)
+    response['Content-Disposition'] = 'attachment; filename="email_example.html"'
+    return response
+
+
 
 @login_required
 def dashboard(request):
