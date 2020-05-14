@@ -6,9 +6,11 @@
         <div class="col-lg-6">
 
         {% if is_existing == False %}
-            <form method="POST">
+            <form method="POST" action="{% url 'sending_form'%}">
                 {% csrf_token %}
-                {{ inline_form.form }}
+                {{ inline_form.form.email }}
+                {{ inline_form.form.template_name }}
+                <input type="hidden" name="campaign_name" id="id_campaign_name" value="{{ pk }}">
                 <button type="submit">Save</button>
             </form>
             {% else %}

@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.views.generic import ListView, CreateView, UpdateView, DetailView
+from django.views.generic.base import ContextMixin
 from django.http import HttpResponse, HttpResponseRedirect
 # Create your views here.
 
@@ -51,18 +52,18 @@ class CampaignInfo(DetailView):
     def get_context_data(self, **kwargs):
         context = super(CampaignInfo, self).get_context_data(**kwargs)
         context['related_campaigns'] = Template.objects.filter(campaigns_id=self.kwargs['pk'])
-        SendingFormSet = inlineformset_factory(Contact, Sending, fields=('email', 'template_name'),extra=2)
+        SendingFormSet = inlineformset_factory(Contact, Sending, fields=('email', 'template_name', 'campaign_name'),extra=1)
         context['inline_form'] = SendingFormSet
         context['is_existing'] = Sending.objects.filter(campaign_name_id=self.kwargs['pk']).exists()
+        context['pk'] = self.kwargs['pk']
         return context
-
-    def post(self, request, *args, **kwargs):
-        if request.method == 'POST':
-            post_data = self.request.POST
-            save_to_db = Sending(campaign_name_id=self.kwargs['pk'], email_id=post_data['email'], template_name_id=post_data['template_name'])
-            save_to_db.save()
-            return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
-
+def campaign_post(request):
+    if request.method == 'POST':
+        post_data = request.POST
+        save_to_db = Sending(campaign_name_id=post_data['campaign_name'], email_id=post_data['email'],
+                             template_name_id=post_data['template_name'])
+        save_to_db.save()
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
 
 class TemplateCreate(CreateView):
