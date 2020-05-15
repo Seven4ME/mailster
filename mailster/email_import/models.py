@@ -8,6 +8,7 @@ class Campaign(models.Model):
     campaign_name = models.CharField(max_length=255, default="")
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
+
 class Contact(models.Model):
     email = models.EmailField()
     created_at = models.DateField(auto_now_add=True)
@@ -33,6 +34,7 @@ class Statistic(models.Model):
     emails_count = models.IntegerField(default=0)
     date = models.DateField()
 
+
 class Template(models.Model):
     campaigns = models.ForeignKey(Campaign, on_delete=models.CASCADE)
     template_name = models.CharField(max_length=255)
@@ -41,10 +43,19 @@ class Template(models.Model):
     def __str__(self):
         return self.template_name
 
+
 class Sending(models.Model):
+    """Журнал отправленных сообщений пользователям."""
+
+    STATUS = (
+        ('new', 'new'),
+        ('pending', 'pending'),
+        ('done', 'done'),
+    )
     campaign_name = models.ForeignKey(Campaign, on_delete=models.CASCADE)
     template_name = models.ForeignKey(Template, on_delete=models.CASCADE)
     email = models.ForeignKey(Contact, on_delete=models.CASCADE)
+    status = models.CharField(max_length=50, choices=STATUS, default='new')
 
 
 

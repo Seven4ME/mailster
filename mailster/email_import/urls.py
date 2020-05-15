@@ -14,5 +14,5 @@ urlpatterns = [
     path('dashboard/contacts/create', login_required(ContactCreate.as_view(template_name="contacts_create.html")), name="contacts_create"),
     path('dashboard/contacts/update/<int:pk>/', login_required(ContactUpdate.as_view(template_name="contacts_update.html")), name="contacts_update"),
     path('dashboard/sending/', login_required(campaign_post), name="sending_form"),
-    path('dashboard/sending/email_example/<int:pk>', sending_email_example, name="email_example")
+    path('dashboard/sending/email_example/', sending_email_example, name="email_example")
 ]

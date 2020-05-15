@@ -1,19 +1,29 @@
-from django.shortcuts import render
-from django.views.generic import ListView, CreateView, UpdateView, DetailView
-
 from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import render
+from django.template import Context, Template
+from django.views.generic import ListView, CreateView, UpdateView, DetailView
 # Create your views here.
 
 
-from .models import Campaign, Contact, Template, Sending
+from .models import Campaign, Contact, Sending
+from .models import Template as TemplateModel
 from django.contrib.auth.decorators import login_required
-from django.forms import inlineformset_factory
 
 
 def sending_email_example(request, **kwargs):
-    campaign_id = Sending.objects.filter(campaign_name_id=kwargs['pk']).get()
-    letter_content = Template.objects.filter(id=campaign_id.template_name_id).get()
-    response = HttpResponse(content=letter_content)
+    # получаем шаблон
+    tmpl = TemplateModel.objects.get(id=request.GET['template_id'])
+    # берем случайного получателя из кампании
+    random_recepient = Contact.objects.filter(campaign_name=tmpl.campaigns).first()
+    # https://docs.djangoproject.com/en/3.0/ref/templates/api/#rendering-a-context
+    # готовим контекст для рендеринга письма,
+    # важно чтобы ключи были в теле шаблона иначе данные в письмо не подставятся
+    context = Context({
+        'email': random_recepient.email
+    })
+    # рендерим шаблон
+    template = Template(tmpl.email_text)
+    response = HttpResponse(content=template.render(context))
     response['Content-Disposition'] = 'attachment; filename="email_example.html"'
     return response
 
@@ -50,17 +60,16 @@ class CampaignUpdate(UpdateView):
     fields = ['campaign_name']
     success_url = '/email_import/dashboard/campaigns'
 
+
 class CampaignInfo(DetailView):
     model = Campaign
 
     def get_context_data(self, **kwargs):
         context = super(CampaignInfo, self).get_context_data(**kwargs)
-        context['related_campaigns'] = Template.objects.filter(campaigns_id=self.kwargs['pk'])
-        SendingFormSet = inlineformset_factory(Contact, Sending, fields=('email', 'template_name', 'campaign_name'),extra=1)
-        context['inline_form'] = SendingFormSet
-        context['is_existing'] = Sending.objects.filter(campaign_name_id=self.kwargs['pk']).exists()
-        context['pk'] = self.kwargs['pk']
+        context['related_campaigns'] = TemplateModel.objects.filter(campaigns_id=self.kwargs['pk'])
         return context
+
+
 def campaign_post(request):
     if request.method == 'POST':
         post_data = request.POST
@@ -71,7 +80,7 @@ def campaign_post(request):
 
 
 class TemplateCreate(CreateView):
-    model = Template
+    model = TemplateModel
     fields = ['campaigns', 'template_name', 'email_text']
     success_url = '/email_import/dashboard/campaigns'
 
@@ -84,7 +93,7 @@ class TemplateCreate(CreateView):
         return kwargs
 
 class TemplateUpdate(UpdateView):
-    model = Template
+    model = TemplateModel
     fields = ['template_name', 'email_text']
     success_url = '/email_import/dashboard/campaigns'
 
