@@ -9,18 +9,31 @@ from .models import Campaign, Contact, Sending
 from .models import Template as TemplateModel
 from django.contrib.auth.decorators import login_required
 
+from django.core.mail import send_mail
+from django.contrib import messages
 
+#For test made test smtp server, using: python -m smtpd -n -c DebuggingServer localhost:1025
 def sending_email_example(request, **kwargs):
     # получаем шаблон
-    tmpl = TemplateModel.objects.get(id=request.GET['template_id'])
+    template_id = request.GET['template_id']
+    tmpl = TemplateModel.objects.get(id=template_id)
     # берем случайного получателя из кампании
     random_recepient = Contact.objects.filter(campaign_name=tmpl.campaigns).first()
     # https://docs.djangoproject.com/en/3.0/ref/templates/api/#rendering-a-context
     # готовим контекст для рендеринга письма,
     # важно чтобы ключи были в теле шаблона иначе данные в письмо не подставятся
     context = Context({
-        'email': random_recepient.email
+        'email': random_recepient.email,
+        'messages': messages.success(request, 'Sending was successfully sended') # Working only after reloading page. Need to solve. (?)
     })
+    send_mail(
+        'Subject here',
+        tmpl.email_text,
+        'admin@mailster.com',
+        [random_recepient.email],
+        fail_silently=False,
+    )
+
     # рендерим шаблон
     template = Template(tmpl.email_text)
     response = HttpResponse(content=template.render(context))

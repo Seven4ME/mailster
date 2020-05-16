@@ -6,6 +6,15 @@
         <div class="col-lg-6">
             <div class="box">
                 <div class="box-body">
+                {% for message in messages %}
+  <div class="alert {{ message.tags }} alert-dismissible" role="alert">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    {{ message }}
+  </div>
+{% endfor %}
+
                     <h4 class="box-title">Detail info about campaign # {{ object.id }}</h4>
                     <div>
                         ID - {{ object.id }} <br>
@@ -33,7 +42,7 @@
                                               <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 002.5 15h11a1.5 1.5 0 001.5-1.5v-6a.5.5 0 00-1 0v6a.5.5 0 01-.5.5h-11a.5.5 0 01-.5-.5v-11a.5.5 0 01.5-.5H9a.5.5 0 000-1H2.5A1.5 1.5 0 001 2.5v11z" clip-rule="evenodd"></path>
                                             </svg>
                                         </a>
-                                        <a href="{% url 'email_example' %}?template_id={{ template.id }}" class="button">run</a>
+                                        <a href="{% url 'email_example' %}?template_id={{ template.id }} " class="button">run</a>
                                     </td>
                                 </tr>
 
