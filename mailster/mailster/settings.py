@@ -171,3 +171,5 @@ STATICFILES_FINDERS = [
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 ]
 
+EMAIL_HOST = 'localhost'
+EMAIL_PORT = 1025
