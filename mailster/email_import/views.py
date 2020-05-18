@@ -26,17 +26,19 @@ def sending_email_example(request, **kwargs):
         'email': random_recepient.email,
         'messages': messages.success(request, 'Sending was successfully sended') # Working only after reloading page. Need to solve. (?)
     })
+    # рендерим шаблон
+    template = Template(tmpl.email_text)
+    response = HttpResponse(content=template.render(context))
+    rendered_email = response.content
     send_mail(
         'Subject here',
-        tmpl.email_text,
+        str(rendered_email),
         'admin@mailster.com',
         [random_recepient.email],
         fail_silently=False,
     )
 
-    # рендерим шаблон
-    template = Template(tmpl.email_text)
-    response = HttpResponse(content=template.render(context))
+
     response['Content-Disposition'] = 'attachment; filename="email_example.html"'
     return response
 
@@ -94,7 +96,7 @@ def campaign_post(request):
 
 class TemplateCreate(CreateView):
     model = TemplateModel
-    fields = ['campaigns', 'template_name', 'email_text']
+    fields = ['campaigns', 'template_name', 'email_text', 'email_subject']
     success_url = '/email_import/dashboard/campaigns'
 
     def get_form_kwargs(self):

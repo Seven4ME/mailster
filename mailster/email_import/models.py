@@ -8,6 +8,9 @@ class Campaign(models.Model):
     campaign_name = models.CharField(max_length=255, default="")
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
+    def __str__(self):
+        return self.campaign_name
+
 
 class Contact(models.Model):
     email = models.EmailField()
@@ -39,6 +42,7 @@ class Template(models.Model):
     campaigns = models.ForeignKey(Campaign, on_delete=models.CASCADE)
     template_name = models.CharField(max_length=255)
     email_text = RichTextField(blank=True, null=True)
+    email_subject = models.CharField(max_length=255, default="")
 
     def __str__(self):
         return self.template_name

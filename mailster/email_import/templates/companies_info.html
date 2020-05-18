@@ -28,6 +28,8 @@
                                 <tr>
                                     <th>#</th>
                                     <th>Template</th>
+                                    <th>Subject</th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -35,6 +37,7 @@
                                 <tr>
                                     <td>{{ template.id }}</td>
                                     <td>{{ template.template_name }}</td>
+                                    <td>{{ template.email_subject }}</td>
                                     <td>
                                         <a href="{% url 'update_template'  object.id%}">
                                             <svg class="bi bi-pencil-square" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
