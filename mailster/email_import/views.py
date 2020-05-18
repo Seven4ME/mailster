@@ -31,9 +31,9 @@ def sending_email_example(request, **kwargs):
     response = HttpResponse(content=template.render(context))
     rendered_email = response.content
     send_mail(
-        'Subject here',
+        tmpl.email_subject,
         str(rendered_email),
-        'admin@mailster.com',
+        tmpl.email_sender,
         [random_recepient.email],
         fail_silently=False,
     )
@@ -78,7 +78,6 @@ class CampaignUpdate(UpdateView):
 
 class CampaignInfo(DetailView):
     model = Campaign
-
     def get_context_data(self, **kwargs):
         context = super(CampaignInfo, self).get_context_data(**kwargs)
         context['related_campaigns'] = TemplateModel.objects.filter(campaigns_id=self.kwargs['pk'])
@@ -96,7 +95,7 @@ def campaign_post(request):
 
 class TemplateCreate(CreateView):
     model = TemplateModel
-    fields = ['campaigns', 'template_name', 'email_text', 'email_subject']
+    fields = ['campaigns', 'template_name', 'email_text', 'email_subject', 'email_sender']
     success_url = '/email_import/dashboard/campaigns'
 
     def get_form_kwargs(self):

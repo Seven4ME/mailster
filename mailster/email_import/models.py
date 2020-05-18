@@ -43,6 +43,7 @@ class Template(models.Model):
     template_name = models.CharField(max_length=255)
     email_text = RichTextField(blank=True, null=True)
     email_subject = models.CharField(max_length=255, default="")
+    email_sender = models.EmailField(default="")
 
     def __str__(self):
         return self.template_name

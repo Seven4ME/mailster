@@ -13,6 +13,10 @@
                             {% csrf_token %}
                             {{ form.media }}
 							<div class="box-body">
+                                <h4 class="box-title text-info"><i class="ti-save mr-15"></i> Email sender</h4>
+								<div class="form-group">
+								  <input type="email" name="email_sender" class="form-control" placeholder="email sender" maxlength="255" required="" id="id_email_sender">
+								</div>
                             <h4 class="box-title text-info"><i class="ti-save mr-15"></i> Email subject</h4>
 								<div class="form-group">
 								  <input type="text" name="email_subject" class="form-control" placeholder="email subject" maxlength="255" required="" id="id_email_subject">
