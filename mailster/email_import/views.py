@@ -3,6 +3,7 @@ from django.shortcuts import render
 from django.template import Context, Template
 from django.views.generic import ListView, CreateView, UpdateView, DetailView
 # Create your views here.
+from decouple import config
 
 
 from .models import Campaign, Contact, Sending
@@ -23,8 +24,7 @@ def sending_email_example(request, **kwargs):
     # готовим контекст для рендеринга письма,
     # важно чтобы ключи были в теле шаблона иначе данные в письмо не подставятся
     context = Context({
-        'email': random_recepient.email,
-        'messages': messages.success(request, 'Sending was successfully sended') # Working only after reloading page. Need to solve. (?)
+        'email': random_recepient.email
     })
     # рендерим шаблон
     template = Template(tmpl.email_text)
@@ -33,7 +33,7 @@ def sending_email_example(request, **kwargs):
     send_mail(
         tmpl.email_subject,
         str(rendered_email),
-        tmpl.email_sender,
+        config('EMAIL_HOST_USER'),
         [random_recepient.email],
         fail_silently=False,
     )
