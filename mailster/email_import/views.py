@@ -18,31 +18,27 @@ def sending_email_example(request, **kwargs):
     # получаем шаблон
     template_id = request.GET['template_id']
     tmpl = TemplateModel.objects.get(id=template_id)
-    # берем случайного получателя из кампании
     recepients = Contact.objects.filter(campaign_name=tmpl.campaigns).all().values('email')
 
     contacts_list = list()
 
     for emails in recepients:
         contacts_list.append(emails['email'])
+        recepients_list = list(recepients)
+        context = Context({
+            'email': recepients_list
+        })
+        # рендерим шаблон
+        template = Template(tmpl.email_text)
+        rendered_email = template.render(context)
+        send_mail(
+            tmpl.email_subject,
+            str(rendered_email),
+            config('EMAIL_HOST_USER'),
+            contacts_list,
+            fail_silently=False,
+        )
 
-    recepients_list = list(recepients)
-    # https://docs.djangoproject.com/en/3.0/ref/templates/api/#rendering-a-context
-    # готовим контекст для рендеринга письма,
-    # важно чтобы ключи были в теле шаблона иначе данные в письмо не подставятся
-    context = Context({
-        'email': recepients_list
-    })
-    # рендерим шаблон
-    template = Template(tmpl.email_text)
-    rendered_email = template.render(context)
-    send_mail(
-        tmpl.email_subject,
-        str(rendered_email),
-        config('EMAIL_HOST_USER'),
-        contacts_list,
-        fail_silently=False,
-    )
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
 
