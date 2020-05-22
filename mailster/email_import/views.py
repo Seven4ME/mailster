@@ -3,30 +3,42 @@ from django.shortcuts import render
 from django.template import Context, Template
 from django.views.generic import ListView, CreateView, UpdateView, DetailView
 # Create your views here.
+from decouple import config
 
 
 from .models import Campaign, Contact, Sending
 from .models import Template as TemplateModel
 from django.contrib.auth.decorators import login_required
 
+from django.core.mail import send_mail
+from django.contrib import messages
 
+#For test made test smtp server, using: python -m smtpd -n -c DebuggingServer localhost:1025
 def sending_email_example(request, **kwargs):
     # получаем шаблон
-    tmpl = TemplateModel.objects.get(id=request.GET['template_id'])
-    # берем случайного получателя из кампании
-    random_recepient = Contact.objects.filter(campaign_name=tmpl.campaigns).first()
-    # https://docs.djangoproject.com/en/3.0/ref/templates/api/#rendering-a-context
-    # готовим контекст для рендеринга письма,
-    # важно чтобы ключи были в теле шаблона иначе данные в письмо не подставятся
-    context = Context({
-        'email': random_recepient.email
-    })
-    # рендерим шаблон
-    template = Template(tmpl.email_text)
-    response = HttpResponse(content=template.render(context))
-    response['Content-Disposition'] = 'attachment; filename="email_example.html"'
-    return response
+    template_id = request.GET['template_id']
+    tmpl = TemplateModel.objects.get(id=template_id)
+    recepients = Contact.objects.filter(campaign_name=tmpl.campaigns).all().values('email')
 
+    contacts_list = list()
+
+    for emails in recepients:
+        contacts_list.append(emails['email'])
+        context = Context({
+            'email': emails
+        })
+        # рендерим шаблон
+        template = Template(tmpl.email_text)
+        rendered_email = template.render(context)
+        send_mail(
+            tmpl.email_subject,
+            str(rendered_email),
+            config('EMAIL_HOST_USER'),
+            emails,
+            fail_silently=False,
+        )
+
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
 
 @login_required
@@ -63,7 +75,6 @@ class CampaignUpdate(UpdateView):
 
 class CampaignInfo(DetailView):
     model = Campaign
-
     def get_context_data(self, **kwargs):
         context = super(CampaignInfo, self).get_context_data(**kwargs)
         context['related_campaigns'] = TemplateModel.objects.filter(campaigns_id=self.kwargs['pk'])
@@ -81,7 +92,7 @@ def campaign_post(request):
 
 class TemplateCreate(CreateView):
     model = TemplateModel
-    fields = ['campaigns', 'template_name', 'email_text']
+    fields = ['campaigns', 'template_name', 'email_text', 'email_subject', 'email_sender']
     success_url = '/email_import/dashboard/campaigns'
 
     def get_form_kwargs(self):
