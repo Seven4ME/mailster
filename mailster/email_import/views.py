@@ -24,9 +24,8 @@ def sending_email_example(request, **kwargs):
 
     for emails in recepients:
         contacts_list.append(emails['email'])
-        recepients_list = list(recepients)
         context = Context({
-            'email': recepients_list
+            'email': emails
         })
         # рендерим шаблон
         template = Template(tmpl.email_text)
@@ -35,7 +34,7 @@ def sending_email_example(request, **kwargs):
             tmpl.email_subject,
             str(rendered_email),
             config('EMAIL_HOST_USER'),
-            contacts_list,
+            emails,
             fail_silently=False,
         )
 
