@@ -5,12 +5,11 @@ from time import sleep
 from .models import Contact
 
 @shared_task
-def send_email_task(tmpl, rendered_email, contacts_list):
-    sleep(10)
+def send_email_task(subject, rendered_email, contacts_list, email_hoster):
     send_mail(
-        tmpl.email_subject,
+        subject,
         str(rendered_email),
-        config('EMAIL_HOST_USER'),
+        email_hoster,
         contacts_list,
         fail_silently=False,
     )
