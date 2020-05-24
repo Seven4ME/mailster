@@ -12,6 +12,7 @@ from django.contrib.auth.decorators import login_required
 
 from django.core.mail import send_mail
 from django.contrib import messages
+from .tasks import send_email_task
 
 #For test made test smtp server, using: python -m smtpd -n -c DebuggingServer localhost:1025
 def sending_email_example(request, **kwargs):
@@ -20,23 +21,16 @@ def sending_email_example(request, **kwargs):
     tmpl = TemplateModel.objects.get(id=template_id)
     recepients = Contact.objects.filter(campaign_name=tmpl.campaigns).all().values('email')
 
-    contacts_list = list()
-
     for emails in recepients:
-        contacts_list.append(emails['email'])
         context = Context({
             'email': emails
         })
         # рендерим шаблон
         template = Template(tmpl.email_text)
         rendered_email = template.render(context)
-        send_mail(
-            tmpl.email_subject,
-            str(rendered_email),
-            config('EMAIL_HOST_USER'),
-            emails,
-            fail_silently=False,
-        )
+        from_email = config('EMAIL_HOST')
+        to_email = [emails['email']]
+        send_email_task(tmpl.email_subject, rendered_email, to_email, from_email)
 
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
