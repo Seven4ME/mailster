@@ -6,6 +6,7 @@ from django.views.generic import ListView, CreateView, UpdateView, DetailView
 from decouple import config
 
 
+
 from .models import Campaign, Contact, Sending
 from .models import Template as TemplateModel
 from django.contrib.auth.decorators import login_required
@@ -29,8 +30,10 @@ def sending_email_example(request, **kwargs):
         template = Template(tmpl.email_text)
         rendered_email = template.render(context)
         from_email = config('EMAIL_HOST')
+        api_url = config('API_EMAIL_ROUTE')
+        api_key = config('API_EMAIL_SECRET_KEY')
         to_email = [emails['email']]
-        send_email_task(tmpl.email_subject, rendered_email, to_email, from_email)
+        send_email_task(api_url,api_key,tmpl.email_subject, rendered_email, to_email, from_email)
 
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
