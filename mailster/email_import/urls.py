@@ -1,5 +1,5 @@
-from django.urls import path, include
-from .views import CampaignList, dashboard, CampaignCreate, ContactList, ContactCreate, ContactUpdate, CampaignUpdate, CampaignInfo, TemplateCreate, TemplateUpdate, campaign_post, sending_email_example
+from django.urls import path
+from .views import *
 from django.contrib.auth.decorators import login_required
 
 urlpatterns = [

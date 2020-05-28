@@ -1,9 +1,10 @@
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.template import Context, Template
 from django.views.generic import ListView, CreateView, UpdateView, DetailView
 # Create your views here.
 from decouple import config
+import uuid
 
 
 
@@ -15,16 +16,19 @@ from django.core.mail import send_mail
 from django.contrib import messages
 from .tasks import send_email_task
 
+
 #For test made test smtp server, using: python -m smtpd -n -c DebuggingServer localhost:1025
 def sending_email_example(request, **kwargs):
     # получаем шаблон
     template_id = request.GET['template_id']
     tmpl = TemplateModel.objects.get(id=template_id)
-    recepients = Contact.objects.filter(campaign_name=tmpl.campaigns).all().values('email')
+    recepients = Contact.objects.filter(campaign_name=tmpl.campaigns).all().values('id', 'email')
 
     for emails in recepients:
+        generated_uuid = uuid.uuid4()
         context = Context({
-            'email': emails
+            'email': emails,
+            'user_uuid': generated_uuid,
         })
         # рендерим шаблон
         template = Template(tmpl.email_text)
@@ -33,6 +37,9 @@ def sending_email_example(request, **kwargs):
         api_url = config('API_EMAIL_ROUTE')
         api_key = config('API_EMAIL_SECRET_KEY')
         to_email = [emails['email']]
+        save_to_db = Sending(uuid=generated_uuid, campaign_name_id=tmpl.campaigns.id, email_id=emails['id'],
+                                 template_name_id=template_id)
+        save_to_db.save()
         send_email_task(api_url,api_key,tmpl.email_subject, rendered_email, to_email, from_email)
 
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
@@ -89,7 +96,7 @@ def campaign_post(request):
 
 class TemplateCreate(CreateView):
     model = TemplateModel
-    fields = ['campaigns', 'template_name', 'email_text', 'email_subject', 'email_sender']
+    fields = ['campaigns', 'template_name', 'email_text', 'email_subject']
     success_url = '/email_import/dashboard/campaigns'
 
     def get_form_kwargs(self):
@@ -118,3 +125,4 @@ class ContactUpdate(UpdateView):
     model = Contact
     fields = ['email', 'is_valid', 'campaign_name']
     success_url = '/email_import/dashboard/contacts'
+

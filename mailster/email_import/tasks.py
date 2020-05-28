@@ -12,7 +12,7 @@ def send_email_task(api_url,api_key, subject, rendered_email, contacts_list, ema
             'from': 'test <mailgun@{}>'.format(email_hoster),
             'to': contacts_list,
             'subject': subject,
-            'text': rendered_email
+            'html': rendered_email
         }
     )
     json_response = response.json()
