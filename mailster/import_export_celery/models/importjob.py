@@ -30,7 +30,6 @@ from import_export.formats.base_formats import DEFAULT_FORMATS
 
 from ..tasks import run_import_job
 
-
 @with_author
 class ImportJob(models.Model):
     file = models.FileField(

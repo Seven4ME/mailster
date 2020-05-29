@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.urls import reverse
 from ckeditor.fields import RichTextField
+import uuid
 
 # Create your models here.
 class Campaign(models.Model):
@@ -37,7 +38,6 @@ class Statistic(models.Model):
     emails_count = models.IntegerField(default=0)
     date = models.DateField()
 
-
 class Template(models.Model):
     campaigns = models.ForeignKey(Campaign, on_delete=models.CASCADE)
     template_name = models.CharField(max_length=255)
@@ -47,7 +47,6 @@ class Template(models.Model):
     def __str__(self):
         return self.template_name
 
-
 class Sending(models.Model):
     """Журнал отправленных сообщений пользователям."""
 
@@ -56,10 +55,12 @@ class Sending(models.Model):
         ('pending', 'pending'),
         ('done', 'done'),
     )
+    uuid = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     campaign_name = models.ForeignKey(Campaign, on_delete=models.CASCADE)
     template_name = models.ForeignKey(Template, on_delete=models.CASCADE)
     email = models.ForeignKey(Contact, on_delete=models.CASCADE)
     status = models.CharField(max_length=50, choices=STATUS, default='new')
+    is_opened = models.BooleanField(default=False)
 
 
 

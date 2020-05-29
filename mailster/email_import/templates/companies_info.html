@@ -29,7 +29,6 @@
                                     <th>#</th>
                                     <th>Template</th>
                                     <th>Subject</th>
-                                    <th>Sender</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -39,7 +38,7 @@
                                     <td>{{ template.id }}</td>
                                     <td>{{ template.template_name }}</td>
                                     <td>{{ template.email_subject }}</td>
-                                    <td>{{ template.email_sender }}</td>
+
 
                                     <td>
                                         <a href="{% url 'update_template'  object.id%}">

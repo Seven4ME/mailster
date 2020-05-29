@@ -1,5 +1,5 @@
-from django.urls import path, include
-from .views import CampaignList, dashboard, CampaignCreate, ContactList, ContactCreate, ContactUpdate, CampaignUpdate, CampaignInfo, TemplateCreate, TemplateUpdate, campaign_post, sending_email_example
+from django.urls import path
+from .views import *
 from django.contrib.auth.decorators import login_required
 
 urlpatterns = [
@@ -14,5 +14,6 @@ urlpatterns = [
     path('dashboard/contacts/create', login_required(ContactCreate.as_view(template_name="contacts_create.html")), name="contacts_create"),
     path('dashboard/contacts/update/<int:pk>/', login_required(ContactUpdate.as_view(template_name="contacts_update.html")), name="contacts_update"),
     path('dashboard/sending/', login_required(campaign_post), name="sending_form"),
-    path('dashboard/sending/email_example/', sending_email_example, name="email_example")
+    path('dashboard/sending/email_example/', sending_email_example, name="email_example"),
+    path('pixel/<uuid>', PixelView.as_view())
 ]
