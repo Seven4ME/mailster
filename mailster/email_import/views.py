@@ -101,8 +101,7 @@ class PixelView(generics.CreateAPIView):
 
     def get(self, request, **kwargs):
         uuid = self.kwargs.get(self.lookup_url_kwarg)
-        get_object_or_404(Sending, uuid=uuid)
-        sending_obj = Sending.objects.get(uuid=uuid)
+        sending_obj = get_object_or_404(Sending, uuid=uuid)
         sending_obj.is_opened = True
         sending_obj.save()
         is_existing_uuid = 'Status of UUID: {} was changed'.format(uuid)
