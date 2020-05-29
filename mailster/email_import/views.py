@@ -1,4 +1,4 @@
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, Http404
 from django.shortcuts import render
 from django.template import Context, Template
 from django.views.generic import ListView, CreateView, UpdateView, DetailView
@@ -16,6 +16,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.mail import send_mail
 from django.contrib import messages
 from .tasks import send_email_task
+from django.shortcuts import get_object_or_404
 
 
 #For test made test smtp server, using: python -m smtpd -n -c DebuggingServer localhost:1025
@@ -100,14 +101,11 @@ class PixelView(generics.CreateAPIView):
 
     def get(self, request, **kwargs):
         uuid = self.kwargs.get(self.lookup_url_kwarg)
-        is_existing_uuid = Sending.objects.filter(uuid=uuid).exists()
-
-        if is_existing_uuid == True:
-            sending_obj = Sending.objects.get(uuid=uuid)
-            sending_obj.is_opened = True
-            sending_obj.save()
-        else:
-            is_existing_uuid = 'UUID: {} does not exists in db'.format(uuid)
+        get_object_or_404(Sending, uuid=uuid)
+        sending_obj = Sending.objects.get(uuid=uuid)
+        sending_obj.is_opened = True
+        sending_obj.save()
+        is_existing_uuid = 'Status of UUID: {} was changed'.format(uuid)
         return Response(is_existing_uuid)
 
 
