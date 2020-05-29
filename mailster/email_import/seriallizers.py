@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from email_import.models import Sending
+from .models import Sending
 
 class EmailOpenSerializer(serializers.ModelSerializer):
     class Meta:
