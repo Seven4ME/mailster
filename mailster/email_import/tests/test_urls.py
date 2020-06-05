@@ -1,15 +1,36 @@
-from django.test import SimpleTestCase
+from django.test import TransactionTestCase
 from django.urls import reverse, resolve
 from ..views import dashboard, CampaignList, CampaignCreate, CampaignUpdate, CampaignInfo, TemplateCreate, TemplateUpdate
 
-class TestUrls(SimpleTestCase):
+from django.test import Client
+from django.contrib.auth.models import User
+
+
+
+class TestUrls(TransactionTestCase):
+    def test_login_status(self):
+        user = User.objects.create(username='testuser')
+        user.set_password('12345')
+        user.save()
+        c = Client()
+        logged_in = c.login(username='testuser', password='12345')
+        self.assertEquals(logged_in, True)
+
     def test_dashboard_url_is_resolved(self):
         url = reverse('dashboard')
         self.assertEquals(resolve(url).func, dashboard)
 
-    def test_dashboard_url_status(self):
-        response = self.client.get(reverse('dashboard'))
-        self.assertEquals(response.status_code, 302)
+    def test_url_dashboard_status(self):
+        user = User.objects.create(username='testuser')
+        user.set_password('12345')
+        user.save()
+        c = Client()
+        logged_in = c.login(username='testuser', password='12345')
+        response = c.get(reverse('dashboard'))
+        self.assertEquals(response.status_code,200)
+
+
+
 
     def test_campaign_list_url_is_resolved(self):
         url = reverse('campaigns_list')
