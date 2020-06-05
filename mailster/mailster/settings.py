@@ -160,7 +160,7 @@ IMPORT_EXPORT_CELERY_MODELS = {
     'Contact': {'app_label': 'email_import', 'model_name': 'Contact'}
 }
 
-#define staticfiles directory 
+#define staticfiles directory
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),

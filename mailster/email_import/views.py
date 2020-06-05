@@ -13,8 +13,6 @@ from .models import Campaign, Contact, Sending
 from .models import Template as TemplateModel
 from django.contrib.auth.decorators import login_required
 
-from django.core.mail import send_mail
-from django.contrib import messages
 from .tasks import send_email_task
 from django.shortcuts import get_object_or_404
 
