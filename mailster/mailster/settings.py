@@ -27,7 +27,7 @@ SECRET_KEY = '^u+@zf!jp4pg20^^r-hm-2$)u9^4s)%hcuq2*az%kmig$51gs='
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1', '0.0.0.0']
 
 
 
@@ -108,7 +108,7 @@ DATABASES = {
         'USER': config('DB_USER'),
         'PASSWORD': config('DB_PASSWORD'),
         'HOST': config('DB_HOST'),
-        'PORT': '',
+        'PORT': '5432',
     }
 }
 
@@ -160,7 +160,7 @@ IMPORT_EXPORT_CELERY_MODELS = {
     'Contact': {'app_label': 'email_import', 'model_name': 'Contact'}
 }
 
-#define staticfiles directory 
+#define staticfiles directory
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
