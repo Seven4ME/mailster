@@ -27,10 +27,7 @@ class TestUrls(TransactionTestCase):
         c = Client()
         logged_in = c.login(username='testuser', password='12345')
         response = c.get(reverse('dashboard'))
-        self.assertEquals(response.status_code,200)
-
-
-
+        self.assertEquals(response.status_code, 200)
 
     def test_campaign_list_url_is_resolved(self):
         url = reverse('campaigns_list')

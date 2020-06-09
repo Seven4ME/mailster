@@ -1,0 +1,29 @@
+version: '3.7'
+services:
+  db:
+    image: postgres:10.1-alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: mailster
+  web:
+    build: .
+    command: python3 mailster/manage.py runserver 0.0.0.0:8000
+    image: mailster
+    volumes:
+      - .:/mailster
+    ports:
+      - 8000:8000
+    depends_on:
+      - db
+  migration:
+    image: mailster
+    command: bash -c "python3 mailster/manage.py makemigrations && python3 mailster/manage.py migrate"
+    volumes:
+      - .:/code
+    depends_on:
+      - db
+volumes:
+  postgres_data:
