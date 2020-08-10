@@ -33,14 +33,14 @@ def sending_email_example(request, **kwargs):
         # рендерим шаблон
         template = Template(tmpl.email_text)
         rendered_email = template.render(context)
-        from_email = config('EMAIL_HOST')
+        from_email = config('EMAIL_HOST_USER')
         api_url = config('API_EMAIL_ROUTE')
         api_key = config('API_EMAIL_SECRET_KEY')
         to_email = [emails['email']]
         save_to_db = Sending(uuid=generated_uuid, campaign_name_id=tmpl.campaigns.id, email_id=emails['id'],
                                  template_name_id=template_id)
         save_to_db.save()
-        send_email_task(api_url,api_key,tmpl.email_subject, rendered_email, to_email, from_email)
+        send_email_task(tmpl.email_subject, rendered_email, to_email, from_email)
 
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
